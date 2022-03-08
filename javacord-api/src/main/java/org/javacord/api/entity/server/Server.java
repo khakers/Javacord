@@ -2052,6 +2052,28 @@ public interface Server extends DiscordEntity, Nameable, UpdatableFromCache<Serv
     CompletableFuture<Collection<Ban>> getBans();
 
     /**
+     * Requests a server ban for the given user id.
+     *
+     * @param userId the id of the user to get a Ban for.
+     * @return A future to get a ban if it exists in the server.
+     */
+    CompletableFuture<Ban> getBan(long userId);
+
+    /**
+     * Requests a server ban for the given user id.
+     *
+     * @param userId the id of the user to get a Ban for.
+     * @return A future to get a ban if it exists in the server.
+     */
+    default CompletableFuture<Ban> getBan(String userId) {
+        try {
+            return getBan(Long.parseLong(userId));
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("The ID must be a number.");
+        }
+    }
+
+    /**
      * Gets a list of all webhooks in this server.
      *
      * @return A list of all webhooks in this server.

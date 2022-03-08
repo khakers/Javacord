@@ -1555,6 +1555,13 @@ public class ServerImpl implements Server, Cleanupable, InternalServerAttachable
     }
 
     @Override
+    public CompletableFuture<Ban> getBan(long userId) {
+        return new RestRequest<Ban>(getApi(), RestMethod.GET, RestEndpoint.SERVER_SINGLE_BAN)
+                .setUrlParameters(getIdAsString(), Long.toUnsignedString(userId))
+                .execute(result -> new BanImpl(this, result.getJsonBody()));
+    }
+
+    @Override
     public CompletableFuture<List<Webhook>> getWebhooks() {
         return new RestRequest<List<Webhook>>(getApi(), RestMethod.GET, RestEndpoint.SERVER_WEBHOOK)
                 .setUrlParameters(getIdAsString())
